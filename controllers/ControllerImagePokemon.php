@@ -33,28 +33,43 @@ class ControllerImagePokemon
   {
     $imagesManager = new ImagesManager();
     $error = null;
+    $_GET["error"] = null;
 
     try {
       if ($_POST) {
-        if ($_FILES["image"]["error"] === UPLOAD_ERR_OK) {
+        $extensions = array('jpg', 'jpeg', 'png', 'gif');
+        if (isset($_FILES["image"]) && $_FILES["image"]["error"] === UPLOAD_ERR_OK) {
+          $fileInfo = pathinfo($_FILES["image"]['name']);
           if ($_FILES["image"]["size"] < 2000000) {
-            $dataImage = [
-              "name" => $_POST["name"],
-              "path" => "./assets/" . $_FILES["image"]["full_path"]
-            ];
-            $imageCreated = new Image($dataImage);
-            $imagesManager->create($imageCreated);
+            if (in_array($fileInfo['extension'], $extensions)) {
+              $invalidCharacters = array('', '/', '.');
+              $fileName = str_replace($invalidCharacters, "-", strtolower($_POST['name']));
+              $filePath = "./assets/" .$fileName. "." .$fileInfo['extension'];
+              move_uploaded_file(
+                $_FILES["image"]['tmp_name'], 
+                $filePath,
+              );
+              $dataImage = [
+                "name" => $_POST["name"],
+                "path" => $filePath,
+              ];
+              $imageCreated = new Image($dataImage);
+              $imagesManager->create($imageCreated);
+            } else {
+              throw new Exception("Le fichier soumis possède une extension non valide (autorisé : jpg, jpeg, png et gif) !");
+            }           
           } else {
-            throw new Exception("Le fichier soumis est supérieur à 2MO...");
+            throw new Exception("Le fichier soumis est supérieur à 2MO !");
           }
         } else {
-          throw new Exception("Le fichier n'a pas été téléchargé...");
+          throw new Exception("Le fichier n'a pas été téléchargé !");
         }
         header("Location: ./index.php?page=imagesPokemon");
       }
     } catch (Exception $e) {
       $error = $e->getMessage();
       echo $error;
+      $_GET["error"] = $error;
     }
 
     require_once 'views/createUpdateImageForm.php';
@@ -65,16 +80,30 @@ class ControllerImagePokemon
     $imagesManager = new ImagesManager();
     $image = $imagesManager->getById($_GET["id"]);
     $error = null;
+    $_GET["error"] = null;
 
     try {
       if ($_POST) {
-        if ($_FILES["image"]["error"] === UPLOAD_ERR_OK) {
+        $extensions = array('jpg', 'jpeg', 'png', 'gif');
+        if (isset($_FILES["image"]) && $_FILES["image"]["error"] === UPLOAD_ERR_OK) {
+          $fileInfo = pathinfo($_FILES["image"]['name']);
           if ($_FILES["image"]["size"] < 2000000) {
+            if (in_array($fileInfo['extension'], $extensions)) {
+              $invalidCharacters = array('', '/', '.');
+              $fileName = str_replace($invalidCharacters, "-", strtolower($_POST['name']));
+              $filePath = "./assets/" .$fileName. "." .$fileInfo['extension'];
+              move_uploaded_file(
+                $_FILES["image"]['tmp_name'], 
+                $filePath,
+              );
             $dataImage = [
               "id" => $_GET["id"],
               "name" => $_POST["name"],
-              "path" => "./assets/" . $_FILES["image"]["full_path"]
+              "path" => $filePath,
             ];
+            } else {
+              throw new Exception("Le fichier soumis possède une extension non valide (autorisé : jpg, jpeg, png et gif) !");
+            }
           } else {
             throw new Exception("Le fichier soumis est supérieur à 2MO...");
           }
@@ -101,6 +130,8 @@ class ControllerImagePokemon
   public function deleteImagePokemon(): void
   {
     $imagesManager = new ImagesManager();
+    $image = $imagesManager->getById($_GET["id"]);
+    unlink($image->getPath());
     $imagesManager->delete($_GET["id"]);
     header("Location: ./index.php?page=imagesPokemon");
   }

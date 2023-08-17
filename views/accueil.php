@@ -4,7 +4,14 @@ ob_start();
 
 <?php if(!$pokemons) : ?>
   <div class="container text-center mt-5 text-danger fs-1">
-    <span>Aucun Pokemon ne correspond à votre recherche ...</span>
+    <span>
+      <?php if(!$input && !$typeSelected) : ?>
+        Aucun Pokemon n'existe pour le moment ... 
+      <?php else : ?>
+        Aucun Pokemon ne correspond à votre recherche ...
+      <?php endif ?>
+    </span>
+    <a href="?page=createPokemon" class="btn btn-success mt-1">Créer</a>
   </div>
 <?php else : ?>
   <div class="container">

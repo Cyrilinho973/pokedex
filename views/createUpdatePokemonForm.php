@@ -109,6 +109,5 @@ if($_GET['page'] === 'createPokemon') {
 $activeHome = "";
 $activeTypes = "";
 $activeImages = "";
-$footer = "w-100 position-absolute bottom-0";
 
 require_once 'views/layout.php';

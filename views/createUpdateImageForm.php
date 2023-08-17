@@ -3,6 +3,11 @@ ob_start();
 ?>
 
 <div class="container">
+  <?php if($_GET["error"]) : ?>
+    <div class="alert alert-danger text-center" role="alert">
+      <?= $_GET["error"] ?>
+    </div>
+  <?php endif ?>
   <form action="" method="post" enctype="multipart/form-data">
     <label class="form-label" for="name">Nom</label>
     <input 
@@ -16,6 +21,8 @@ ob_start();
       placeholder="Le nom du Pokemon"
       <?php if($_GET['page'] === 'updateImagePokemon') : ?>
         value="<?= $image->getName() ?>"
+      <?php elseif($_POST) : ?>
+        value="<?= $_POST["name"] ?>"      
       <?php endif ?>
       />
 

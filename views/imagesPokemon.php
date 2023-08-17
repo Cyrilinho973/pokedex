@@ -4,7 +4,14 @@ ob_start();
 
 <?php if(!$images) : ?>
   <div class="container text-center mt-5 text-danger fs-1">
-    <span>Aucune image de Pokemon ne correspond à votre recherche ...</span>
+    <span>
+    <?php if(!$input) : ?>
+      Aucune image de Pokemon n'existe pour le moment ... 
+    <?php else : ?>
+      Aucune image de Pokemon ne correspond à votre recherche ...
+    <?php endif ?>
+    </span>
+    <a href="?page=createImagePokemon" class="btn btn-success mt-1">Créer</a>
   </div>
 <?php else : ?>
   <div class="container">
