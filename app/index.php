@@ -33,3 +33,5 @@ if (!isset($_GET['page'])) {
 } elseif ($_GET['page'] === 'updateImagePokemon') {
     $controllerImagePokemon->showUpdateImagePokemon();
 }
+
+echo 'Hello world';

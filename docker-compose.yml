@@ -1,0 +1,21 @@
+version: "3.9"
+services:
+  php-apache:
+    ports:
+      - "80:80"
+    build: './build/php'
+    volumes:
+      - ./app:/var/www/html
+  mysql:
+    ports:
+      - "3306:3306"
+    build: './build/mysql'
+    environment:
+      MYSQL_ROOT_PASSWORD: ""
+      MYSQL_DATABASE: "pokedex"
+      MYSQL_ALLOW_EMPTY_PASSWORD: true
+    volumes:
+      - dbData:/var/lib/mysql
+volumes:
+  app:
+  dbData:

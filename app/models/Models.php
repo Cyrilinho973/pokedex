@@ -22,30 +22,40 @@ trait Model2
   private PDO $db;
 
   public function __construct() {
-    $dbName = "studi_pokedex";
+    /* $dbName = "studi_pokedex"; */
+    $host = "mysql";
+    $dbName = "pokedex";
     $port = 3306;
     $username = "root";
+    $charset = "utf8mb4";
     $password = "";
     try {
-      $pdo = new PDO('mysql:host=localhost;charset=utf8mb4', 'root', '');
+      /* $pdo = new PDO('mysql:host=localhost;charset=utf8mb4', 'root', ''); */
+      $pdo = new PDO(
+        dsn: "mysql:host=$host;charset=$charset;port=$port",
+        username: $username,
+        password: $password,
+      );
       $pdo->exec('CREATE DATABASE IF NOT EXISTS '.$dbName);
-      $this->db = new PDO("mysql:host=localhost;dbname=$dbName;port=$port;charset=utf8", $username, $password);
-      $this->db->exec('
-          CREATE TABLE IF NOT EXISTS image (
+      /* $this->db = new PDO("mysql:host=localhost;dbname=$dbName;port=$port;charset=utf8", $username, $password); */
+      $this->db = new PDO(
+        dsn: "mysql:host=$host;dbname=$dbName;charset=$charset;port=$port",
+        username: $username,
+        password: $password,
+      );
+      $this->db->exec('CREATE TABLE IF NOT EXISTS type (
             id INT(11) PRIMARY KEY AUTO_INCREMENT, 
             name VARCHAR(30) NOT NULL,
             color VARCHAR(10) NOT NULL         
           ) DEFAULT CHARSET utf8mb4
       ');
-      $this->db->exec('
-          CREATE TABLE IF NOT EXISTS type (
+      $this->db->exec('CREATE TABLE IF NOT EXISTS image (
               id INT(11) PRIMARY KEY AUTO_INCREMENT, 
               name VARCHAR(80) NOT NULL,
               path VARCHAR(255) NOT NULL        
           ) DEFAULT CHARSET utf8mb4
       ');
-      $this->db->exec('
-        CREATE TABLE IF NOT EXISTS pokemon (
+      $this->db->exec('CREATE TABLE IF NOT EXISTS pokemon (
             id INT(11) PRIMARY KEY AUTO_INCREMENT,
             number INT(11) NOT NULL,
             name VARCHAR(50) NOT NULL,

@@ -1,11 +1,10 @@
 <?php
 
-require_once './models/PokemonsManager.php';
-require_once './models/Pokemon.php';
-require_once './models/TypesManager.php';
-require_once './models/Type.php';
-require_once './models/ImagesManager.php';
-require_once './models/Image.php';
+require_once 'models/PokemonsManager.php';
+require_once 'models/Pokemon.php';
+require_once 'models/Type.php';
+require_once 'models/ImagesManager.php';
+require_once 'models/Image.php';
 
 class ControllerPokemon
 {

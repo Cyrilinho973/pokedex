@@ -1,11 +1,11 @@
 <?php
 
-require_once './models/PokemonsManager.php';
-require_once './models/Pokemon.php';
-require_once './models/TypesManager.php';
-require_once './models/Type.php';
-require_once './models/ImagesManager.php';
-require_once './models/Image.php';
+require_once 'models/PokemonsManager.php';
+require_once 'models/Pokemon.php';
+require_once 'models/TypesManager.php';
+require_once 'models/Type.php';
+require_once 'models/ImagesManager.php';
+require_once 'models/Image.php';
 
 class ControllerTypePokemon
 {
@@ -21,6 +21,7 @@ class ControllerTypePokemon
   {
     $typesManager = new TypesManager();
     $error = null;
+    $_GET["error"] = null;
 
     try {
       if ($_POST) {
@@ -42,6 +43,7 @@ class ControllerTypePokemon
     } catch (Exception $e) {
       $error = $e->getMessage();
       echo $error;
+      $_GET["error"] = $error;
     }
 
     require_once 'views/createUpdateTypeForm.php';
